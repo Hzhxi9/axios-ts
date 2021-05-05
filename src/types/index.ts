@@ -19,7 +19,9 @@ export interface AxiosRequestConfig {
   /**请求地址 */
   url: string;
   /**请求的HTTP方法 */
-  method: Method;
+  method?: Method;
+  /**请求头 */
+  headers?: any;
   /**POST,PATCH等类型请求的数据,放到request body中 */
   data?: any;
   /**GET,HEAD等类型请求的数据,拼接到url的query string中 */
