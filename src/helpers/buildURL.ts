@@ -29,7 +29,7 @@ function encode(url: string): string {
  * @param paramsSerializer
  */
 
-export function buildURL(url: string, params?: any, paramsSerializer?: any) {
+export default function buildURL(url: string, params?: any, paramsSerializer?: any): string {
   /** 如果params为空,则直接返回url*/
   if (!params) return url;
 
@@ -97,4 +97,6 @@ export function buildURL(url: string, params?: any, paramsSerializer?: any) {
    * 没有则将处理后的键值对用?拼接在url后面
    */
   if (serializeParams) url += (url.indexOf("?") === -1 ? "?" : "&") + serializeParams;
+
+  return url;
 }
