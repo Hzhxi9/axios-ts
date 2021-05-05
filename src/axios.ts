@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "./types/index";
+import { AxiosRequestConfig, AxiosPromise } from "./types/index";
 
 import xhr from "./xhr";
 import buildURL from "./helpers/buildURL";
@@ -29,9 +29,10 @@ function transformHeaders(config: AxiosRequestConfig): any {
   return processHeaders(headers, data);
 }
 
-function axios(config: AxiosRequestConfig) {
+/**转换为Promise */
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config);
-  xhr(config);
+  return xhr(config);
 }
 
 export default axios;

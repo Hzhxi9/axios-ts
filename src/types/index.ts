@@ -26,4 +26,25 @@ export interface AxiosRequestConfig {
   data?: any;
   /**GET,HEAD等类型请求的数据,拼接到url的query string中 */
   params?: any;
+  /**响应数据的类型 */
+  responseType?: XMLHttpRequestResponseType;
 }
+
+/**服务端响应的数据接口类型 */
+export interface AxiosResponse {
+  /**服务端返回的数据 */
+  data: any;
+  /**HTTP 状态码 */
+  status: number;
+  /**状态消息 */
+  statusText: string;
+  /**响应头 */
+  headers: any;
+  /**请求配置对象 */
+  config: AxiosRequestConfig;
+  /**请求的 XMLHttpRequest 对象实例*/
+  request: any;
+}
+
+/**继承Promise */
+export interface AxiosPromise extends Promise<AxiosResponse> {}
