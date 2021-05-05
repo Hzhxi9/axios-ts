@@ -26,7 +26,7 @@ export interface AxiosRequestConfig {
   data?: any;
   /**GET,HEAD等类型请求的数据,拼接到url的query string中 */
   params?: any;
-  /**响应数据的类型 */
+  /**指定响应数据的类型 */
   responseType?: XMLHttpRequestResponseType;
 }
 

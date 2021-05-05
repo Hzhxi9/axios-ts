@@ -7,8 +7,11 @@ import * as Utils from "./utils";
 function normalizeHeaderName(headers: any, normalizeName: string) {
   if (!headers) return;
 
-  Object.keys(headers).forEach(name => {
-    if (name !== normalizeName && name.toUpperCase() === normalizeName.toUpperCase()) {
+  Object.keys(headers).forEach((name) => {
+    if (
+      name !== normalizeName &&
+      name.toUpperCase() === normalizeName.toUpperCase()
+    ) {
       headers[normalizeName] = headers[name];
       delete headers[name];
     }
@@ -26,4 +29,25 @@ export default function processHeaders(headers: any, data: any): any {
       headers["Content-Type"] = "application/json;charset=utf-8";
   }
   return headers;
+}
+
+/**
+ * 处理响应式headers
+ * 将字符串headers转换为对象形式
+ */
+export function parseHeaders(headers: string): any {
+  let res = Object.create(null);
+
+  if (!headers) return res;
+
+  headers.split("\r\n").forEach((line) => {
+    let [key, value] = line.split(":");
+    key = key.trim().toLowerCase();
+    if (!key) return;
+    if (value) value = value.trim();
+
+    res[key] = value;
+  });
+
+  return res;
 }

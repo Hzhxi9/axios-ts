@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from "./types/index";
+import { parseHeaders } from "../src/helpers/headers";
 
 /**封装原生请求 */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -11,9 +12,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 2. 配置请求参数
     request.open(method.toUpperCase(), url, true);
 
-    Object.keys(headers).forEach(name => {
+    Object.keys(headers).forEach((name) => {
       /**当传入的data为null时，此时的Content-Type是没有意义的,此时可以删除 */
-      if (data === null && name.toLowerCase() === "content-type") delete headers[name];
+      if (data === null && name.toLowerCase() === "content-type")
+        delete headers[name];
       /**添加请求头 */
       request.setRequestHeader(name, headers[name]);
     });
@@ -27,10 +29,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     request.onreadystatechange = function handleLoad() {
       if (request.readyState !== 4) return;
 
-      const responseHeaders = request.getAllResponseHeaders();
+      const responseHeaders = parseHeaders(request.getAllResponseHeaders());
 
+      /**
+       * responseType没有设置或者设置为text,响应式数据存于request.responseText
+       * 其余情况存在于request.response
+       */
       const responseData =
-        responseType && responseType !== "text" ? request.response : request.responseText;
+        responseType && responseType !== "text"
+          ? request.response
+          : request.responseText;
 
       const response: AxiosResponse = {
         data: responseData,
