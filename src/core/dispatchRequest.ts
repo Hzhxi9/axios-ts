@@ -1,11 +1,9 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse, AxiosInstance } from "../types/index";
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "../types/index";
 
 import xhr from "./xhr";
 import buildURL from "../helpers/buildURL";
 import transformRequest, { transformResponse } from "../helpers/data";
 import processHeaders from "../helpers/headers";
-import Axios from "./Axios";
-import { extend } from "../helpers/utils";
 
 function processConfig(config: AxiosRequestConfig) {
   config.url = transformURL(config);

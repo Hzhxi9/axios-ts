@@ -86,4 +86,6 @@ export interface Axios {
 /**混合Axios类 */
 export interface AxiosInstance extends Axios {
   (config: AxiosRequestConfig): AxiosPromise;
+  /**重载的函数类型 */
+  (url: string, config?: any): AxiosPromise;
 }

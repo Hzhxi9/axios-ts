@@ -81,9 +81,14 @@ router.patch("/api/expandInterface/patch", function (req, res) {
   res.json(req.body);
 });
 
+/**模拟重载 */
+router.post("/api/addParams", function (req, res) {
+  res.json(req.body);
+});
+
 app.use(router);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);
