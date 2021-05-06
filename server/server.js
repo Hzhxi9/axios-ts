@@ -86,9 +86,17 @@ router.post("/api/addParams", function (req, res) {
   res.json(req.body);
 });
 
+/**添加泛型 */
+router.get("/api/getUser", function (req, res) {
+  res.json({
+    msg: "hello world",
+    data: { name: "name", age: 18 },
+  });
+});
+
 app.use(router);
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);
