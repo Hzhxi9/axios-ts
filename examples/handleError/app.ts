@@ -21,7 +21,10 @@ axios({
     console.log(res);
   })
   .catch(err => {
-    console.log(err, "url写错");
+    console.log(err.message, "message");
+    console.log(err.config, "config");
+    console.log(err.request, "request");
+    console.log(err.code, "code");
   });
 
 /**模拟网络错误 */

@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from "./types/index";
 import { parseHeaders } from "../src/helpers/headers";
+import createError from "../src/helpers/error";
 
 /**封装原生请求 */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -17,7 +18,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /**捕获请求超时异常 */
     request.ontimeout = function () {
-      reject(new Error(`Timeout of ${timeout} ms exceeded`));
+      /**createError 详细超时错误 */
+      reject(createError(`Timeout of ${timeout} ms exceeded`, config, "TIMEOUT", request));
     };
 
     Object.keys(headers).forEach(name => {
@@ -37,7 +39,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status <= 300) {
         resolve(response);
       } else {
-        reject(new Error(`Request failed with status code ${response.status}`));
+        /**createError 详细描述状态异常 */
+        reject(
+          createError(
+            `Request failed with status code ${response.status}`,
+            config,
+            null,
+            response.status,
+            response
+          )
+        );
       }
     }
 
@@ -71,7 +82,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     /**网络错误 */
     request.onerror = function () {
-      reject(new Error("Net Error"));
+      /**createError 详细网络错误 */
+      reject(createError("New Error", config, null, request));
     };
   });
 }

@@ -48,5 +48,17 @@ export interface AxiosResponse {
   request: any;
 }
 
+/**异常信息接口类型 */
+export interface AxiosError extends Error {
+  /**请求配置对象 */
+  config: AxiosRequestConfig;
+  /**错误码 */
+  code: string | null | number;
+  /**请求的 XMLHttpRequest 对象实例*/
+  request: any;
+  /**服务端响应数据 */
+  response: AxiosResponse;
+}
+
 /**继承Promise */
 export interface AxiosPromise extends Promise<AxiosResponse> {}
