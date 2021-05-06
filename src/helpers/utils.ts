@@ -243,25 +243,11 @@ export function merge(...args: any[]) {
 /**
  * 扩展对象 将 b 里面的属性和方法继承给 a , 并且将 b 里面的方法的执行上个下文都绑定到 thisArg
  */
-export function extend<T, U>(
-  a: { [key in string | number]: T },
-  b: { [key in string | number]: U },
-  thisArg: any
-): { [key in string | number]: T & U } {
-  forEach(b, function assignValue(val: any, key: string | number) {
-    if (thisArg && isFunction(val)) {
-      /**
-       * 继承方法
-       */
-      a[key] = bind(val, thisArg) as any;
-    } else {
-      /**
-       * 继承属性
-       */
-      a[key] = val;
-    }
-  });
-  return a as { [key in string | number]: T & U };
+export function extend<T, U>(to: T, from: U): T & U {
+  for (const key in from) {
+    (to as T & U)[key] = from[key] as any;
+  }
+  return to as T & U;
 }
 
 /**

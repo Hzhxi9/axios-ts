@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from "./types/index";
-import { parseHeaders } from "../src/helpers/headers";
-import createError from "../src/helpers/error";
+import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from "../types/index";
+import { parseHeaders } from "../../src/helpers/headers";
+import createError from "../../src/helpers/error";
 
 /**封装原生请求 */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
@@ -14,7 +14,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     if (timeout) request.timeout = timeout;
 
     // 2. 配置请求参数
-    if (url) request.open(method.toUpperCase(), url, true);
+    url && request.open(method.toUpperCase(), url, true);
 
     /**捕获请求超时异常 */
     request.ontimeout = function () {

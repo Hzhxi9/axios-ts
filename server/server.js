@@ -50,6 +50,37 @@ router.get("/api/handleError/timeout", function (req, res) {
   }, 3000);
 });
 
+/**扩展接口 */
+router.get("/api/expandInterface/get", function (req, res) {
+  res.json({
+    msg: "hello",
+  });
+});
+
+router.options("/api/expandInterface/options", function (req, res) {
+  res.end();
+});
+
+router.delete("/api/expandInterface/delete", function (req, res) {
+  res.end();
+});
+
+router.head("/api/expandInterface/head", function (req, res) {
+  res.end();
+});
+
+router.post("/api/expandInterface/post", function (req, res) {
+  res.json(req.body);
+});
+
+router.put("/api/expandInterface/put", function (req, res) {
+  res.json(req.body);
+});
+
+router.patch("/api/expandInterface/patch", function (req, res) {
+  res.json(req.body);
+});
+
 app.use(router);
 
 const port = process.env.PORT || 3000;
