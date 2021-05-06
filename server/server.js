@@ -29,6 +29,27 @@ router.post("/api/getResponse", function (req, res) {
   res.json(req.body);
 });
 
+/**响应正常情况 有50%几率响应成功 返回状态码500 */
+router.get("/api/handleError", function (req, res) {
+  if (Math.random() > 0.5) {
+    res.json({
+      msg: "hello world",
+    });
+  } else {
+    res.status(500);
+    res.end();
+  }
+});
+
+/**响应请求超时，设置三秒后响应,发起请求那里设置超时时间为三秒，所以会发生请求超时异常 */
+router.get("/api/handleError/timeout", function (req, res) {
+  setTimeout(() => {
+    res.json({
+      msg: "hello world",
+    });
+  }, 3000);
+});
+
 app.use(router);
 
 const port = process.env.PORT || 3000;

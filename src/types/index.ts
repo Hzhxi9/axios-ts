@@ -28,6 +28,8 @@ export interface AxiosRequestConfig {
   params?: any;
   /**指定响应数据的类型 */
   responseType?: XMLHttpRequestResponseType;
+  /**超时时间 请求发送后超过某个时间后仍然没收到响应，则请求自动终止，并会触发 XMLHttpRequest 对象实例的 ontimeout 事件。 */
+  timeout?: number;
 }
 
 /**服务端响应的数据接口类型 */
