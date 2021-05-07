@@ -153,3 +153,15 @@ export interface ResolveFn<T> {
 export interface RejectFn {
   (error: any): any;
 }
+
+/**
+ * 使用axios(config)来创建一个axios实例对象，然后发送请求，各个地方使用axios都是指向同一个实例对象
+ * 修改了这个对象的默认配置，所有的axios实例都会受到影响
+ *
+ * 利用axios.create可以创建新的实例对象，接收一个AxiosRequestConfig类型的参数作为该实例的默认配置对象
+ */
+
+/**扩展一个静态接口 */
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance;
+}

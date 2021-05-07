@@ -19,7 +19,7 @@ interface PromiseArr<T> {
 
 export default class Axios {
   defaults: AxiosRequestConfig;
-  private interceptors: {
+  interceptors: {
     request: InterceptorManager<AxiosRequestConfig>;
     response: InterceptorManager<AxiosResponse<any>>;
   };

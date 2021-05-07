@@ -104,6 +104,11 @@ router.post("/api/transformData", function (req, res) {
   res.json(req.body);
 });
 
+// 添加create接口
+router.post("/api/expandCreateInterface", function (req, res) {
+  res.json(req.body);
+});
+
 app.use(router);
 
 const port = process.env.PORT || 3000;
