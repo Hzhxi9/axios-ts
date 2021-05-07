@@ -99,6 +99,11 @@ router.post("/api/mergeConfig", function (req, res) {
   res.json(req.body);
 });
 
+// 添加transformRequest 和 transformResponse
+router.post("/api/transformData", function (req, res) {
+  res.json(req.body);
+});
+
 app.use(router);
 
 const port = process.env.PORT || 3000;

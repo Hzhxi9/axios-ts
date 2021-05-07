@@ -2,7 +2,7 @@ import axios from "../../src/axios";
 
 axios({
   url: "/api/getResponse",
-  method: "POST",
+  method: "post",
   data: {
     a: 1,
     n: "n",
@@ -13,7 +13,7 @@ axios({
 
 axios({
   url: "/api/getResponse",
-  method: "POST",
+  method: "post",
   responseType: "json",
   data: {
     a: 1,

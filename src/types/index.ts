@@ -31,6 +31,22 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType;
   /**超时时间 请求发送后超过某个时间后仍然没收到响应，则请求自动终止，并会触发 XMLHttpRequest 对象实例的 ontimeout 事件。 */
   timeout?: number;
+  /**
+   * 允许在请求数据发送到服务器之前对其进行修改，只适用于put、patch、post
+   * 如果值是数组，则数组中的最后一个函数必须返回一个字符串或FormData、URLSearchParams、Blob等类型作为xhr.send方法的参数
+   * transform过程中可以修改headers对象
+   */
+  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  /**
+   * 允许你在把响应数据传递给then或者catch之前对他们进行修改
+   */
+  transformResponse?: AxiosTransformer | AxiosTransformer[];
+
+  [propName: string]: any;
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any;
 }
 
 /**
