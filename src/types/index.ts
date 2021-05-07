@@ -69,6 +69,7 @@ export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 /**定义Axios类类型接口,扩展Axios内置方法以及属性 */
 export interface Axios {
+  defaults: AxiosRequestConfig;
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>;
     response: AxiosInterceptorManager<AxiosResponse<any>>;

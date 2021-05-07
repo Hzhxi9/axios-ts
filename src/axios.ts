@@ -1,11 +1,12 @@
 import Axios from "./core/Axios";
+import defaults from "./defaults";
 
 import { extend } from "./helpers/utils";
-import { AxiosInstance } from "./types";
+import { AxiosInstance, AxiosRequestConfig } from "./types";
 
 /**混合对象 */
-function getAxios(): AxiosInstance {
-  const context = new Axios();
+function getAxios(config: AxiosRequestConfig): AxiosInstance {
+  const context = new Axios(config);
 
   const axios = Axios.prototype.request.bind(context);
 
@@ -14,6 +15,6 @@ function getAxios(): AxiosInstance {
   return axios as AxiosInstance;
 }
 
-const axios = getAxios();
+const axios = getAxios(defaults);
 
 export default axios;

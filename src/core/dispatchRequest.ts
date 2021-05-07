@@ -3,12 +3,13 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "../types/index"
 import xhr from "./xhr";
 import buildURL from "../helpers/buildURL";
 import transformRequest, { transformResponse } from "../helpers/data";
-import processHeaders from "../helpers/headers";
+import processHeaders, { flattenHeaders } from "../helpers/headers";
 
 function processConfig(config: AxiosRequestConfig) {
   config.url = transformURL(config);
   config.headers = transformHeaders(config);
   config.data = transformRequestData(config);
+  config.headers = flattenHeaders(config.headers, config.method!);
 }
 
 /**用于GET */

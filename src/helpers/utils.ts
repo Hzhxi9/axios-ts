@@ -265,3 +265,11 @@ export function stripBOM(content: string) {
   }
   return content;
 }
+
+/**判断对象是否存在键 */
+export function isValidKey(
+  key: string | number | symbol,
+  object: object
+): key is keyof typeof object {
+  return key in object;
+}

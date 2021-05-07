@@ -94,6 +94,11 @@ router.get("/api/getUser", function (req, res) {
   });
 });
 
+/**合并配置 */
+router.post("/api/mergeConfig", function (req, res) {
+  res.json(req.body);
+});
+
 app.use(router);
 
 const port = process.env.PORT || 3000;

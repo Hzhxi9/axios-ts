@@ -1,5 +1,6 @@
 import dispatchRequest from "./dispatchRequest";
 import InterceptorManager from "./interceptorManager";
+import mergeConfig from "./mergeConfig";
 
 import {
   AxiosRequestConfig,
@@ -17,12 +18,14 @@ interface PromiseArr<T> {
 }
 
 export default class Axios {
+  defaults: AxiosRequestConfig;
   private interceptors: {
     request: InterceptorManager<AxiosRequestConfig>;
     response: InterceptorManager<AxiosResponse<any>>;
   };
 
-  constructor() {
+  constructor(defaultsConfig: AxiosRequestConfig) {
+    this.defaults = defaultsConfig;
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse<any>>(),
@@ -40,6 +43,9 @@ export default class Axios {
     } else {
       config = url;
     }
+
+    /**合并默认配置和用户配置 */
+    config = mergeConfig(this.defaults, config);
 
     /**实现顺序调用 */
     const arr: PromiseArr<any>[] = [
