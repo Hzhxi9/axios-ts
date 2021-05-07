@@ -15,6 +15,7 @@ export type Method =
   | "patch"
   | "PATCH";
 
+/**请求配置config类型 */
 export interface AxiosRequestConfig {
   /**请求地址 */
   url?: string;
@@ -68,6 +69,11 @@ export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
 
 /**定义Axios类类型接口,扩展Axios内置方法以及属性 */
 export interface Axios {
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>;
+    response: AxiosInterceptorManager<AxiosResponse<any>>;
+  };
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
 
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
@@ -79,23 +85,11 @@ export interface Axios {
   options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
 
   /**添加data */
-  post<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): AxiosPromise<T>;
+  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 
-  put<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): AxiosPromise<T>;
+  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 
-  patch<T = any>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): AxiosPromise<T>;
+  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 }
 
 /**混合Axios类 */
@@ -103,4 +97,42 @@ export interface AxiosInstance extends Axios {
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
   /**重载的函数类型 */
   <T = any>(url: string, config?: any): AxiosPromise<T>;
+}
+/**
+ * axios请求和响应拦截器
+ *
+ * 请求拦截器在每个请求发送之前为请求做一些额外的东西
+ * 例如可以在请求拦截器中为所有的请求添加token认证等信息，添加后在发出去
+ *
+ * 响应拦截器在每个请求响应回来之后可以对其进行一道预处理，处理之后再将响应返回给真正的请求
+ */
+
+/**
+ * 拦截器类型接口
+ * T: 创建的是请求拦截器还是响应拦截器对应传入的AxiosRequestConfig或者AxiosResponse
+ **/
+export interface AxiosInterceptorManager<T> {
+  /**
+   * 添加拦截器
+   * 返回一个创建拦截器的id,用于标识拦截器
+   **/
+  use(resolve: ResolveFn<T>, reject?: RejectFn): number;
+  /**
+   * 删除拦截器
+   * 接收拦截器的id作为参数，用来表明删除哪个拦截器
+   **/
+  eject(id: number): void;
+}
+
+/**
+ * resolve函数的参数在请求拦截器和响应拦截器有所不同
+ * 请求拦截器中参数是请求的配置对象config，类型是AxiosRequestConfig
+ * 响应拦截器中参数是响应对象response，类型是AxiosResponse
+ */
+export interface ResolveFn<T> {
+  (val: T): T | Promise<T>;
+}
+
+export interface RejectFn {
+  (error: any): any;
 }
