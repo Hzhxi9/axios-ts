@@ -42,6 +42,9 @@ export interface AxiosRequestConfig {
    */
   transformResponse?: AxiosTransformer | AxiosTransformer[];
 
+  /**添加取消函数类型 */
+  cancelToken?: CancelToken;
+
   [propName: string]: any;
 }
 
@@ -102,11 +105,23 @@ export interface Axios {
   options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
 
   /**添加data */
-  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): AxiosPromise<T>;
 
-  put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  put<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): AxiosPromise<T>;
 
-  patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  patch<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): AxiosPromise<T>;
 }
 
 /**混合Axios类 */
@@ -164,4 +179,30 @@ export interface RejectFn {
 /**扩展一个静态接口 */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance;
+}
+
+/**CancelToken类的实例对象 */
+export interface CancelToken {
+  /**必选 接收字符串类型的取消原因作为参数 */
+  promise: Promise<string>;
+  /**可选 取消原因 */
+  reason?: string;
+}
+
+/**
+ * 因为CancelToken类的构造函数接收一个函数作为参数
+ * 因此需要定义一个该参数函数的类型
+ *
+ */
+
+/**Cancel类的构造函数的参数类型 */
+export interface CancelExecutor {
+  /**该参数接收一个取消函数作为参数 */
+  (cancel: Canceler): void;
+}
+
+/**取消函数类型Canceler */
+export interface Canceler {
+  /**接收错误原因作为参数 */
+  (message?: string): void;
 }
