@@ -1,5 +1,6 @@
 import Axios from "./core/Axios";
 import defaults from "./defaults";
+import CancelToken from "./cancel/CancelToken";
 import mergeConfig from "./core/mergeConfig";
 
 import { extend } from "./helpers/utils";
@@ -27,5 +28,7 @@ const axios = getAxios(defaults);
 axios.create = function (config: AxiosRequestConfig) {
   return getAxios(mergeConfig(defaults, config));
 };
+
+axios.CancelToken = CancelToken;
 
 export default axios;

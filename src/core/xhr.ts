@@ -1,11 +1,23 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosPromise } from "../types/index";
+import {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosPromise,
+} from "../types/index";
 import { parseHeaders } from "../../src/helpers/headers";
 import createError from "../../src/helpers/error";
 
 /**封装原生请求 */
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = "GET", headers, responseType, timeout } = config;
+    const {
+      data = null,
+      url,
+      method = "GET",
+      headers,
+      responseType,
+      timeout,
+      cancelToken,
+    } = config;
 
     // 1. 创建XMLHttpRequest异步对象
     const request = new XMLHttpRequest();
@@ -19,12 +31,20 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     /**捕获请求超时异常 */
     request.ontimeout = function () {
       /**createError 详细超时错误 */
-      reject(createError(`Timeout of ${timeout} ms exceeded`, config, "TIMEOUT", request));
+      reject(
+        createError(
+          `Timeout of ${timeout} ms exceeded`,
+          config,
+          "TIMEOUT",
+          request
+        )
+      );
     };
 
-    Object.keys(headers).forEach(name => {
+    Object.keys(headers).forEach((name) => {
       /**当传入的data为null时，此时的Content-Type是没有意义的,此时可以删除 */
-      if (data === null && name.toLowerCase() === "content-type") delete headers[name];
+      if (data === null && name.toLowerCase() === "content-type")
+        delete headers[name];
       /**添加请求头 */
       request.setRequestHeader(name, headers[name]);
     });
@@ -33,6 +53,21 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 3. 发送请求
     request.send(data);
+
+    /**在发出请求后取消 */
+    if (cancelToken) {
+      /**
+       * 判断是否配置了cancelToken
+       */
+      cancelToken.promise.then((reason) => {
+        /**
+         * 配置了cancelToken，并且当外部调用了请求取消触发函数
+         * 在then函数内部调用XMLHttpRequest对象上的abort方法取消请求
+         */
+        request.abort();
+        reject(reason);
+      });
+    }
 
     /**错误状态处理函数 */
     function handleResponse(response: AxiosResponse) {
@@ -66,7 +101,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
        * 其余情况存在于request.response
        */
       const responseData =
-        responseType && responseType !== "text" ? request.response : request.responseText;
+        responseType && responseType !== "text"
+          ? request.response
+          : request.responseText;
 
       const response: AxiosResponse = {
         data: responseData,

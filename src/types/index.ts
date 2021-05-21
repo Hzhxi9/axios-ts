@@ -179,6 +179,7 @@ export interface RejectFn {
 /**扩展一个静态接口 */
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance;
+  CancelToken: CancelTokenStatic;
 }
 
 /**CancelToken类的实例对象 */
@@ -205,4 +206,13 @@ export interface CancelExecutor {
 export interface Canceler {
   /**接收错误原因作为参数 */
   (message?: string): void;
+}
+
+/**
+ * 由于CancelToken是一个类
+ * 为这个类定义一个类类型接口CancelTokenStatic
+ * 该接口里面有一个构造函数接口
+ **/
+export interface CancelTokenStatic {
+  new (executor: CancelExecutor): CancelToken;
 }
