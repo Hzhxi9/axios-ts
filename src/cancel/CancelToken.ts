@@ -25,11 +25,11 @@
 import { CancelExecutor } from "../types";
 
 interface ResolvePromise {
-  (reason?: string): void;
+  (reason: string): void;
 }
 
 export default class CancelToken {
-  promise: Promise<string>;
+  promise: Promise<string> ;
   reason?: string;
 
   constructor(executor: CancelExecutor) {
@@ -43,7 +43,7 @@ export default class CancelToken {
     });
     /**
      * 接着执行executor函数，该函数接收的参数是cancel函数
-     * 
+     *
      * cancel函数就是将来取消触发函数
      * 当外部调用了cancel函数，在cancel函数内部，会调用resolvePromise把Promise对象从pending状态变为resolved状态，然后就会执行then函数，
      * 在then函数内部调用XMLHttpRequest对象上的abort()方法取消请求
@@ -53,7 +53,7 @@ export default class CancelToken {
 
       this.reason = message;
 
-      resolvePromise(this.reason);
+      this.reason && resolvePromise(this.reason);
     });
   }
 }

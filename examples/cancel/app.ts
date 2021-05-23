@@ -35,9 +35,9 @@ axios
     }),
   })
   .catch((error) => {
-    console.log(error);
+    console.log(error,'error');
   });
 
-setTimeout(() => {
-  cancel("Operation canceled by the user");
-}, 1000);
+// setTimeout(() => {
+//   cancel("Operation canceled by the user");
+// }, 1000);
