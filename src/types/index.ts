@@ -212,7 +212,26 @@ export interface Canceler {
  * 由于CancelToken是一个类
  * 为这个类定义一个类类型接口CancelTokenStatic
  * 该接口里面有一个构造函数接口
+ *
+ *
+ * 第一种方式就是在CancelToken类里面增加一个类可以调用的静态方法source
+ * 然后把变量cancel定义在了静态方法source内部把CancelToken类实例好
+ * 最后组成对象一并返回
+ *
+ * 增加source方法
  **/
 export interface CancelTokenStatic {
   new (executor: CancelExecutor): CancelToken;
+  source(): CancelTokenSource;
+}
+
+/**
+ * source返回一个对象，里面包含两个属性
+ * 分别是
+ * CancelToken类的实例对象token，类型是CancelToken
+ * 触发函数cancel，类型是Canceler
+ */
+export interface CancelTokenSource {
+  token: CancelToken;
+  cancel: Canceler;
 }

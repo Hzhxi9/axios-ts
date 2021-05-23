@@ -116,14 +116,23 @@ router.get("/api/cancel", function (req, res) {
   //     msg: "cancel success",
   //   });
   // }, 3000);
+  res.json({
+    msg: "cancel success",
+  });
+});
+
+// 添加cancelSource
+router.get("/api/cancelSource", function (req, res) {
+  setTimeout(() => {
     res.json({
       msg: "cancel success",
     });
+  }, 3000);
 });
 
 app.use(router);
 
-const port = process.env.PORT || 3009;
+const port = process.env.PORT || 3011;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);

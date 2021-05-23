@@ -22,14 +22,19 @@
  *  isCancel接口接收错误对象e作为参数，用来判断该错误是不是由取消请求导致的
  */
 
-import { CancelExecutor } from "../types";
+import {
+  Canceler,
+  CancelExecutor,
+  CancelTokenSource,
+  CancelTokenStatic,
+} from "../types";
 
 interface ResolvePromise {
   (reason: string): void;
 }
 
 export default class CancelToken {
-  promise: Promise<string> ;
+  promise: Promise<string>;
   reason?: string;
 
   constructor(executor: CancelExecutor) {
@@ -55,5 +60,25 @@ export default class CancelToken {
 
       this.reason && resolvePromise(this.reason);
     });
+  }
+
+  /**
+   * 第一种方式source
+   * 
+   * 将第二种方式的显示实例化CancelToken类挪到类里面
+   * 并且把cancel变量也挪到里面来
+   * 然后分别把实例对象赋给token，触发函数赋给cancel
+   * 一并返回出去，在外面使用
+   */
+  static source(): CancelTokenSource {
+    let cancel!: Canceler;
+    let token = new CancelToken((c) => {
+      cancel = c;
+    });
+
+    return {
+      cancel,
+      token,
+    };
   }
 }
