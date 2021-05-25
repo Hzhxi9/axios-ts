@@ -29,13 +29,15 @@ import {
   CancelTokenStatic,
 } from "../types";
 
+import Cancel from "./Cancel";
+
 interface ResolvePromise {
-  (reason: string): void;
+  (reason: Cancel): void;
 }
 
 export default class CancelToken {
-  promise: Promise<string>;
-  reason?: string;
+  promise: Promise<Cancel>;
+  reason?: Cancel;
 
   constructor(executor: CancelExecutor) {
     let resolvePromise: ResolvePromise;
@@ -43,7 +45,7 @@ export default class CancelToken {
      * 在CancelToken构造函数内部，首先实例化一个pending状态的Promise对象
      * 然后用一个resolvePromise变量指向resolve函数
      */
-    this.promise = new Promise<string>((resolve) => {
+    this.promise = new Promise<Cancel>((resolve) => {
       resolvePromise = resolve;
     });
     /**
@@ -54,17 +56,21 @@ export default class CancelToken {
      * 在then函数内部调用XMLHttpRequest对象上的abort()方法取消请求
      */
     executor((message) => {
-      if (this.reason) return;
+      if (this.reason) {
+        return;
+      } else {
+        if (message) {
+          this.reason = new Cancel(message);
 
-      this.reason = message;
-
-      this.reason && resolvePromise(this.reason);
+          this.reason && resolvePromise(this.reason);
+        }
+      }
     });
   }
 
   /**
    * 第一种方式source
-   * 
+   *
    * 将第二种方式的显示实例化CancelToken类挪到类里面
    * 并且把cancel变量也挪到里面来
    * 然后分别把实例对象赋给token，触发函数赋给cancel

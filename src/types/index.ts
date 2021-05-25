@@ -180,14 +180,16 @@ export interface RejectFn {
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance;
   CancelToken: CancelTokenStatic;
+  Cancel: CancelStatic;
+  isCancel: (value: any) => boolean;
 }
 
 /**CancelToken类的实例对象 */
 export interface CancelToken {
   /**必选 接收字符串类型的取消原因作为参数 */
-  promise: Promise<string>;
+  promise: Promise<Cancel>;
   /**可选 取消原因 */
-  reason?: string;
+  reason?: Cancel;
 }
 
 /**
@@ -234,4 +236,18 @@ export interface CancelTokenStatic {
 export interface CancelTokenSource {
   token: CancelToken;
   cancel: Canceler;
+}
+
+/**
+ * 先定义了Cancel类的实例对象类型Cancel
+ * 他里面只有一个属性，取消原因message
+ * 定义了Cancel类的类类型，它里面包含了构造函数属性
+ * 构造函数接收取消原因作为参数，返回Cancel类的实例对象
+ */
+export interface Cancel {
+  message?: string;
+}
+
+export interface CancelStatic {
+  new(message?: string): Cancel;
 }
