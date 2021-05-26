@@ -58,12 +58,11 @@ export default class CancelToken {
     executor((message) => {
       if (this.reason) {
         return;
-      } else {
-        if (message) {
-          this.reason = new Cancel(message);
+      }
+      if (message) {
+        this.reason = new Cancel(message);
 
-          this.reason && resolvePromise(this.reason);
-        }
+        this.reason && resolvePromise(this.reason);
       }
     });
   }
