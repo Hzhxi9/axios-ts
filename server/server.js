@@ -130,9 +130,18 @@ router.get("/api/cancelSource", function (req, res) {
   }, 3000);
 });
 
+// 添加throwIfRequested
+router.get("/api/throwIfRequested", function (req, res) {
+  setTimeout(() => {
+    res.json({
+      msg: "cancel success",
+    });
+  }, 3000);
+});
+
 app.use(router);
 
-const port = process.env.PORT || 3012;
+const port = process.env.PORT || 3013;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);

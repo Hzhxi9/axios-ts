@@ -190,6 +190,8 @@ export interface CancelToken {
   promise: Promise<Cancel>;
   /**可选 取消原因 */
   reason?: Cancel;
+  
+  throwIfRequested(): void;
 }
 
 /**

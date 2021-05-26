@@ -20,6 +20,26 @@
  *  source.cancel就是取消请求触发函数
  *  axios混合对象增加一个静态接口isCancel
  *  isCancel接口接收错误对象e作为参数，用来判断该错误是不是由取消请求导致的
+ *
+ *
+ *  完善取消请求功能
+ *  有两个请求，请求一和请求二，这两个请求都受某个条件影响
+ *  也就是说当这个条件成立时，这两个请求都会被取消
+ *  亦或者说当请求一发出后，此时突然该条件成立了那么立即取消了请求一
+ *  而接下来请求二就不要在发了
+ *  而不是说请求而照样发出
+ *  只不过发出后被取消
+ *
+ *  请求一和请求二都受某个条件影响，请求一发出后一秒该条件突然成立随即取消请求
+ *  而1.5秒后请求2秒照样发出，接着被取消。这样会造成资源浪费。所以直接请求二不发送。
+ *
+ *  优化
+ *  在发送请求前加条件判断
+ *  首先判断当前是否配置了cancelToken，其次在判断取消原因reason是否存在
+ *  若如果存在说明这个cancelToken已经被使用过了
+ *  我们就不发送这个请求了
+ *  直接抛出异常即可
+ *  并且抛异常的信息就是我们取消的原因
  */
 
 import {
@@ -38,6 +58,8 @@ interface ResolvePromise {
 export default class CancelToken {
   promise: Promise<Cancel>;
   reason?: Cancel;
+
+  
 
   constructor(executor: CancelExecutor) {
     let resolvePromise: ResolvePromise;
@@ -65,6 +87,20 @@ export default class CancelToken {
         this.reason && resolvePromise(this.reason);
       }
     });
+  }
+
+  /**
+   * 该方法用来判断取消原因reason是否存在
+   * 如果存在则直接抛出异常
+   * 并且把取消原因作为异常信息
+   * 
+   * 在发送请求前做次判断，判断是否配置了cancelToken
+   * 如果配置了进而再调用throwIfRequested方法判断取消原因是否存在
+   */
+  throwIfRequested(): void {
+    if (this.reason) {
+      throw this.reason;
+    }
   }
 
   /**
