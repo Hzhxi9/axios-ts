@@ -111,14 +111,14 @@ router.post("/api/expandCreateInterface", function (req, res) {
 
 // 添加cancel接口
 router.get("/api/cancel", function (req, res) {
-  // setTimeout(() => {
-  //   res.json({
-  //     msg: "cancel success",
-  //   });
-  // }, 3000);
-  res.json({
-    msg: "cancel success",
-  });
+  setTimeout(() => {
+    res.json({
+      msg: "cancel success",
+    });
+  }, 3000);
+  // res.json({
+  //   msg: "cancel success",
+  // });
 });
 
 // 添加cancelSource
@@ -132,7 +132,7 @@ router.get("/api/cancelSource", function (req, res) {
 
 app.use(router);
 
-const port = process.env.PORT || 3011;
+const port = process.env.PORT || 3012;
 
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`);
